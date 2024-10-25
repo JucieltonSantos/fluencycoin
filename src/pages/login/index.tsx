@@ -1,7 +1,9 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const LoginScreen = () => {
   const router = useRouter();
@@ -16,7 +18,8 @@ const LoginScreen = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 1000);
+    Cookies.set("email", email, { expires: 7 });
     router.push("/onboarding");
   };
 

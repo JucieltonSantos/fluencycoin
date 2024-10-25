@@ -1,21 +1,22 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Play } from "lucide-react";
+import { Coins } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const VideoLessonScreen = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-
+  const router = useRouter();
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
   const [error, setError] = useState(null);
+  const [coins, setCoins] = useState(3500);
 
   const [answers, setAnswers] = useState<any>([]);
 
   const handleChange = (value: any) => {
-    console.log(answers);
-    console.log(value);
     const question = value.split("-")[0];
     const resp = value.split("-")[1];
     const answer = value.split("-")[2];
@@ -39,7 +40,6 @@ const VideoLessonScreen = () => {
           throw new Error("Erro ao buscar dados");
         }
         const result = await response.json();
-        console.log(result);
         setData(result);
       } catch (error: any) {
         setError(error?.message);
@@ -51,15 +51,26 @@ const VideoLessonScreen = () => {
     fetchData();
   }, []);
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-purple-900 text-white flex flex-col">
+        <button type="button" className="bg-indigo-500" disabled>
+          <svg
+            className="animate-spin h-10 w-10 mr-3"
+            viewBox="0 0 20 20"
+          ></svg>
+          Processing...
+        </button>
+      </div>
+    );
   if (error) return <div>Erro: {error}</div>;
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("Respostas enviadas:", answers);
-
+    setLoading2(true);
+    const userCookie = Cookies.get("email");
     const sendData = {
-      email: "jucieltonsantos@gmail.com",
+      email: userCookie,
       results: answers,
     };
 
@@ -77,6 +88,9 @@ const VideoLessonScreen = () => {
 
       if (response.ok) {
         const result = await response.json();
+        setLoading2(false);
+        router.push("/coins");
+
         console.log("Respostas enviadas com sucesso:", result);
       } else {
         console.error("Erro ao enviar as respostas:", response.status);
@@ -86,20 +100,34 @@ const VideoLessonScreen = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-purple-900 text-white flex flex-col">
-      {/* Video Player Area */}
-      <div className="relative w-full aspect-video bg-purple-800">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className="w-20 h-20 flex items-center justify-center bg-pink-500 rounded-full hover:bg-pink-600 transition-colors"
-          >
-            <Play className="w-8 h-8 ml-1" fill="white" />
-          </button>
+  // Common Header Component
+  const Header = ({ title = "", showBack = true, showCoins = true }) => (
+    <div className="p-4">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          {!showBack && (
+            <div className="text-2xl font-bold">
+              FLUENCY
+              <div className="text-xs text-purple-200">ACADEMY</div>
+            </div>
+          )}
+          {title && <h1 className="text-xl font-bold">{title}</h1>}
+        </div>
+        <div className="flex gap-3 items-center">
+          {showCoins && (
+            <div className="flex items-center gap-2 bg-purple-800 rounded-full px-4 py-2">
+              <Coins className="w-5 h-5 text-yellow-400" />
+              <span className="font-bold">{coins}</span>
+            </div>
+          )}
         </div>
       </div>
+    </div>
+  );
 
+  return (
+    <div className="min-h-screen bg-purple-900 text-white flex flex-col">
+      <Header showBack={false} showCoins />
       {/* Description Area */}
       <div className="flex-1 p-6">
         {/* Main Description */}
@@ -118,7 +146,7 @@ const VideoLessonScreen = () => {
                   return (
                     <div
                       key={key}
-                      className="border rounded-md border-border-solid border-2 p-4 border-purple-700"
+                      className="border rounded-md border-border-solid border-2 p-4 border-purple-700 mb-2"
                     >
                       <span className="text-pink-500 font-medium">
                         {key + 1 + "."}
@@ -167,8 +195,9 @@ const VideoLessonScreen = () => {
                 <button
                   className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-xl transition-colors"
                   type="submit"
+                  disabled={loading2}
                 >
-                  Enviar respostas
+                  {loading2 ? "Enviando..." : "Enviar respostas"}
                 </button>
               </div>
             </form>

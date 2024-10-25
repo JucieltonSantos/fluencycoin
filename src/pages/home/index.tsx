@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+/* eslint-disable */
+import React, { useEffect, useState } from "react";
 import {
   MessageCircle,
   Trophy,
   Crown,
-  Medal,
   ChevronRight,
   ChevronLeft,
-  Globe,
   Coins,
   ShoppingBag,
   Book,
   Plus,
-  Shirt,
   User,
   Home,
 } from "lucide-react";
@@ -24,7 +22,24 @@ const FluencyPrototype = () => {
   const router = useRouter();
   const [currentScreen, setCurrentScreen] = useState("home");
   const [coins, setCoins] = useState(3500);
-  const [selectedCategory, setSelectedCategory] = useState("avatar");
+  const [selectedCategory, setSelectedCategory] = useState("lessons");
+
+  const currentUrl =
+    typeof window !== "undefined"
+      ? new URL(window.location.href)
+      : new URL("https://fluencycoin-7w4d.vercel.app/?idParam=page");
+
+  // Obter os parâmetros da URL
+  const searchParams = currentUrl.searchParams;
+
+  // Exemplo de como acessar um parâmetro específico, por exemplo, 'id'
+  const idParam = searchParams.get("page");
+
+  useEffect(() => {
+    if (idParam) {
+      setCurrentScreen("store");
+    }
+  }, []);
 
   // Navigation function
   const navigate = (screen: string) => {
@@ -95,7 +110,6 @@ const FluencyPrototype = () => {
         className={`p-2 rounded-full ${
           currentScreen === "settings" ? "bg-pink-500" : "bg-purple-700"
         }`}
-        onClick={() => navigate("settings")}
       >
         <div className="bg-pink-500 rounded-full w-10 h-10 flex items-center justify-center">
           ML
@@ -111,29 +125,15 @@ const FluencyPrototype = () => {
         id: 1,
         language: "English",
         nativeLanguage: "Inglês",
-        currentLesson: "Aula 3: Mic Up",
+        currentLesson: "Aula 1: Mic Up",
         progress: 0,
         flag: "🇺🇸",
-      },
-      {
-        id: 2,
-        language: "Spanish",
-        nativeLanguage: "Espanhol",
-        currentLesson: "Aula 1: Básicos",
-        progress: 15,
-        flag: "🇪🇸",
       },
     ];
 
     return (
       <div>
         <Header showBack={false} showCoins />
-        <div className="px-4 mb-4">
-          <div className="bg-purple-700 rounded-full px-4 py-2 inline-flex items-center gap-2">
-            <Globe className="w-5 h-5" />
-            <span>English</span>
-          </div>
-        </div>
         <div className="space-y-4 px-4 mb-20">
           {courses.map((course) => (
             <div
@@ -160,13 +160,10 @@ const FluencyPrototype = () => {
               <div className="flex justify-between items-center">
                 <button
                   className="bg-pink-500 hover:bg-pink-600 rounded-full py-3 px-6 flex items-center gap-2"
-                  onClick={() => router.push("/video")}
+                  onClick={() => router.push("/video-initial")}
                 >
                   Continuar Jornada
                   <ChevronRight className="w-5 h-5" />
-                </button>
-                <button className="bg-purple-700 p-3 rounded-full">
-                  <MessageCircle className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -179,6 +176,29 @@ const FluencyPrototype = () => {
   // Store Screen Content
   const StoreScreen = () => {
     const storeItems: any = {
+      lessons: [
+        {
+          id: 1,
+          name: "Gavin",
+          price: 1200,
+          image: "/images/gavin.svg",
+          tag: "Novo",
+        },
+        {
+          id: 2,
+          name: "Paula Gabriela",
+          price: 1000000,
+          image: "/images/paula.svg",
+          tag: "Popular",
+        },
+        {
+          id: 3,
+          name: "Rhavi",
+          price: 2000,
+          image: "/images/rhavi.svg",
+          tag: "Especial",
+        },
+      ],
       avatar: [
         {
           id: 1,
@@ -209,34 +229,12 @@ const FluencyPrototype = () => {
           tag: "Especial",
         },
       ],
-      lessons: [
-        {
-          id: 1,
-          name: "Gavin",
-          price: 1200,
-          image: "/images/gavin.svg",
-          tag: "Novo",
-        },
-        {
-          id: 2,
-          name: "Paula Gabriela",
-          price: 800,
-          image: "/images/paula.svg",
-          tag: "Popular",
-        },
-        {
-          id: 3,
-          name: "Rhavi",
-          price: 2000,
-          image: "/images/rhavi.svg",
-          tag: "Especial",
-        },
-      ],
+
       coins: [
         {
           id: 1,
-          name: "1000 Coins",
-          price: "R$ 4,99",
+          name: "Aula Paula Gabriela - 999999 Coins",
+          price: "R$ 2.137,99",
           image: "/images/money_bag_color.svg",
           amount: 1000,
         },
@@ -364,42 +362,42 @@ const FluencyPrototype = () => {
         name: "Maria Silva",
         points: 2850,
         streak: 45,
-        avatar: "/api/placeholder/32/32",
+        avatar: "/images/star-struck_color.svg",
       },
       {
         id: 2,
         name: "João Santos",
         points: 2720,
         streak: 32,
-        avatar: "/api/placeholder/32/32",
+        avatar: "/images/smiling_face_with_heart-eyes_color.svg",
       },
       {
         id: 3,
         name: "Ana Oliveira",
         points: 2680,
         streak: 28,
-        avatar: "/api/placeholder/32/32",
+        avatar: "/images/beaming_face_with_smiling_eyes_color.svg",
       },
       {
         id: 4,
         name: "Pedro Costa",
         points: 2590,
         streak: 21,
-        avatar: "/api/placeholder/32/32",
+        avatar: "/images/glasses.svg",
       },
       {
         id: 5,
         name: "Lucia Pereira",
         points: 2485,
         streak: 19,
-        avatar: "/api/placeholder/32/32",
+        avatar: "/images/glasses.svg",
       },
       {
         id: 6,
         name: "Carlos Lima",
         points: 2390,
         streak: 15,
-        avatar: "/api/placeholder/32/32",
+        avatar: "/images/glasses.svg",
       },
     ];
 
@@ -410,9 +408,6 @@ const FluencyPrototype = () => {
         {/* Title Section */}
         <div className="px-4 mb-6">
           <h1 className="text-2xl font-bold mb-2">Ranking Global</h1>
-          <p className="text-purple-200">
-            Compete com estudantes do mundo todo
-          </p>
         </div>
 
         {/* Top 3 Podium */}
@@ -425,7 +420,11 @@ const FluencyPrototype = () => {
                 <AvatarFallback>JS</AvatarFallback>
               </Avatar>
               <div className="h-24 w-20 bg-purple-700/50 rounded-t-xl flex flex-col items-center justify-end pb-2">
-                <Medal className="w-6 h-6 text-gray-300 mb-1" />
+                <img
+                  src={"/images/2nd_place_medal_color.svg"}
+                  alt={""}
+                  className="w-10 h-10 object-cover"
+                />
                 <p className="text-sm font-semibold">{rankings[1].points}</p>
               </div>
             </div>
@@ -440,7 +439,11 @@ const FluencyPrototype = () => {
                 </Avatar>
               </div>
               <div className="h-32 w-20 bg-purple-600/50 rounded-t-xl flex flex-col items-center justify-end pb-2">
-                <Trophy className="w-6 h-6 text-yellow-400 mb-1" />
+                <img
+                  src={"/images/trophy_color.svg"}
+                  alt={""}
+                  className="w-10 h-10 object-cover"
+                />
                 <p className="text-sm font-semibold">{rankings[0].points}</p>
               </div>
             </div>
@@ -452,7 +455,11 @@ const FluencyPrototype = () => {
                 <AvatarFallback>AO</AvatarFallback>
               </Avatar>
               <div className="h-20 w-20 bg-purple-700/50 rounded-t-xl flex flex-col items-center justify-end pb-2">
-                <Medal className="w-6 h-6 text-amber-700 mb-1" />
+                <img
+                  src={"/images/3rd_place_medal_color.svg"}
+                  alt={""}
+                  className="w-10 h-10 object-cover"
+                />
                 <p className="text-sm font-semibold">{rankings[2].points}</p>
               </div>
             </div>
@@ -470,8 +477,7 @@ const FluencyPrototype = () => {
                     {user.id}
                   </span>
                   <Avatar className="h-12 w-12 border-2 border-purple-500">
-                    <AvatarImage src={user.avatar} />
-                    <AvatarFallback>
+                    <AvatarFallback className="text-black">
                       {user.name
                         .split(" ")
                         .map((n) => n[0])
@@ -480,17 +486,10 @@ const FluencyPrototype = () => {
                   </Avatar>
                   <div>
                     <p className="font-semibold">{user.name}</p>
-                    <div className="flex items-center gap-2 text-sm text-purple-200">
-                      <Trophy className="w-4 h-4" />
-                      {user.points} pontos
-                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-end">
-                  <span className="text-sm text-purple-200">Streak</span>
-                  <span className="font-semibold text-pink-500">
-                    {user.streak} dias
-                  </span>
+                  <span className="text-sm text-purple-200">{user.points}</span>
                 </div>
               </div>
             ))}
