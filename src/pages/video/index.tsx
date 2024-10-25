@@ -120,6 +120,12 @@ const VideoLessonScreen = () => {
               <span className="font-bold">{coins}</span>
             </div>
           )}
+          <div
+            className="flex items-center gap-2 bg-purple-800 rounded-full px-4 py-2"
+            onClick={() => router.push("/login")}
+          >
+            <span className="font-bold">Sair</span>
+          </div>
         </div>
       </div>
     </div>

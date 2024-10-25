@@ -28,6 +28,12 @@ const VideoLessonScreenCoins = () => {
               <span className="font-bold">{coins}</span>
             </div>
           )}
+          <div
+            className="flex items-center gap-2 bg-purple-800 rounded-full px-4 py-2"
+            onClick={() => router.push("/login")}
+          >
+            <span className="font-bold">Sair</span>
+          </div>
         </div>
       </div>
     </div>
@@ -42,9 +48,11 @@ const VideoLessonScreenCoins = () => {
           <img src={"/images/big_coin.svg"} alt={""} className="w-full" />
         </div>
       </div>
-      <div className="flex items-center justify-center mt-4">
-        <h1 className="text-xl font-bold">{msg}</h1>
-      </div>
+      {msg && (
+        <div className="flex items-center justify-center mt-4 border-2 border-purple-300 p-4">
+          <h1 className="text-xl font-bold">{msg}</h1>
+        </div>
+      )}
       <div className="flex items-center justify-center mt-4">
         <button
           className="bg-pink-500 hover:bg-pink-600 rounded-full py-3 px-6 flex items-center gap-2"
@@ -53,7 +61,7 @@ const VideoLessonScreenCoins = () => {
             setMsg("Você recebeu 10 Coins");
             setTimeout(() => {
               router.push("/home?page=store");
-            }, 1000);
+            }, 1500);
           }}
         >
           Resgatar

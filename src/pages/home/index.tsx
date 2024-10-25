@@ -74,6 +74,12 @@ const FluencyPrototype = () => {
               <span className="font-bold">{coins}</span>
             </div>
           )}
+          <div
+            className="flex items-center gap-2 bg-purple-800 rounded-full px-4 py-2"
+            onClick={() => router.push("/login")}
+          >
+            <span className="font-bold">Sair</span>
+          </div>
         </div>
       </div>
     </div>
@@ -278,7 +284,13 @@ const FluencyPrototype = () => {
             </div>
             <div className="flex items-center gap-2 bg-purple-800 rounded-full px-4 py-2">
               <Coins className="w-5 h-5 text-yellow-400" />
-              <span className="font-bold">3,500</span>
+              <span className="font-bold">3,510</span>
+            </div>
+            <div
+              className="flex items-center gap-2 bg-purple-800 rounded-full px-4 py-2"
+              onClick={() => router.push("/login")}
+            >
+              <span className="font-bold">Sair</span>
             </div>
           </div>
         </div>
